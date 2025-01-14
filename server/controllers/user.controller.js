@@ -83,21 +83,25 @@ export const Login=async(req,res)=>{
     }
 };
 
-export const Getdata=async(req,res)=>{
+export const Getdata = async (req, res) => {
     try {
-        const data=await User.find({});
-        if(!data)
-        {
-            res.status(200).json({
-                message:"no data found"
-            });
-        }
-        res.status(200).json({
-            message:"data fetched",
-            data:data
+      const data = await User.find({});
+      if (!data || data.length === 0) {
+        return res.status(200).json({
+          message: "No data found",
+          data: [],
         });
-        
+      }
+      res.status(200).json({
+        message: "Data fetched successfully",
+        data: data,
+      });
     } catch (error) {
-     console.log(error);   
+      console.error("Error fetching data:", error);
+      res.status(500).json({
+        message: "Internal server error",
+        error: error.message,
+      });
     }
-}
+  };
+  
