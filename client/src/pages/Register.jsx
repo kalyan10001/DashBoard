@@ -1,28 +1,32 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+
 
 function Register() {
+
+  const navigate=useNavigate();
+
   const [formData, setFormData] = useState({
     username: "",
     dob: "",
     email: "",
     password: "",
   });
-  const navigate = useNavigate();
 
-  const handleRegister = async () => {
+  const handleRegister = async (e) => {
     const response = await fetch("http://localhost:5000/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
     });
 
-    if (response) {
+    if (response.ok) {
       const data = await response.json();
       localStorage.setItem("user", JSON.stringify(data.user));
       localStorage.setItem("token", data.token);
-      navigate("/dashboard");
+      navigate("/");
     } else {
+      const data = await response.json();
       alert("Registration failed");
     }
   };
@@ -63,10 +67,21 @@ function Register() {
         />
         <button
           onClick={handleRegister}
-          className="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600"
+          className="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 mb-4"
         >
           Register
         </button>
+        <div className="text-center">
+          <p className="text-sm">
+            Already have an account?{" "}
+            <Link
+              to="/"
+              className="text-blue-500 underline"
+            >
+              Login
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

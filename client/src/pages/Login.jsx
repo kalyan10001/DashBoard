@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -14,18 +14,17 @@ function Login() {
         body: JSON.stringify({ username, password }),
       });
 
-      if (!response.ok) {
+      if (!response) {
         alert('Invalid user');
         throw new Error("Invalid credentials");
       }
-
       const data = await response.json();
       if (data.user && data.token) {
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("token", data.token);
         navigate("/dashboard");
       } else {
-        throw new Error("Login failed. Please try again.");
+        alert(data.message);
       }
     } catch (error) {
       console.log(error.message);
@@ -55,6 +54,17 @@ function Login() {
         >
           Login
         </button>
+        <div className="text-center">
+          <p className="text-sm">
+            Dont have an account?{" "}
+            <Link
+              to="/register"
+              className="text-blue-500 underline"
+            >
+              Register
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

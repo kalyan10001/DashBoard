@@ -54,12 +54,16 @@ export const Login=async(req,res)=>{
         const user=await User.findOne({username:username});
         if(!user)
         {
-           throw new Error("user not registred");
+           return res.status(400).json({
+            message:"user not registered"
+           });
         }
         const pass=await bcrypt.compare(password,user.password);
         if(!pass)
         {
-            throw new Error("passwords not match");
+            return res.status(400).json({
+                message:"passwords not match"
+            });
         }
 
         const token=jwt.sign({
