@@ -23,7 +23,7 @@ export const Register=async(req,res)=>{
         const newdob=convertToDateFormat(dob);
         const newuser=await new User({
             username,
-            dob:newdob,
+            dob:new Date(dob),
             email,
             password:hashedpass
         });
@@ -32,7 +32,7 @@ export const Register=async(req,res)=>{
         console.log("registration successfull");
         res.status(200).json({
             message:"user registered successfully",
-            user:data
+            user:data,
         });
         
     } catch (error) {
@@ -54,16 +54,12 @@ export const Login=async(req,res)=>{
         const user=await User.findOne({username:username});
         if(!user)
         {
-            return res.status(200).json({
-                message:"user not registered"
-            });
+           throw new Error("user not registred");
         }
         const pass=await bcrypt.compare(password,user.password);
         if(!pass)
         {
-            return res.status(200).json({
-                message:"passwords doesnt match"
-            });
+            throw new Error("passwords not match");
         }
 
         const token=jwt.sign({
@@ -75,6 +71,7 @@ export const Login=async(req,res)=>{
         console.log("login successfull");
         res.status(200).json({
             message:"user login successful",
+            user:user,
             token:token
         });
     } catch (error) {
