@@ -15,7 +15,7 @@ function Dashboard() {
 
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/auth/getdata");
+        const response = await fetch("https://dashboard-4e5o.onrender.com/api/auth/getdata");
         const data = await response.json();
         if (data?.data) {
           setUserData(data.data);
@@ -50,6 +50,7 @@ function Dashboard() {
                 <th className="px-4 py-2 text-left">Name</th>
                 <th className="px-4 py-2 text-left">DOB</th>
                 <th className="px-4 py-2 text-left">Email</th>
+                <th className="px-4 py-2 text-left">Role</th>
               </tr>
             </thead>
             <tbody>
@@ -61,6 +62,7 @@ function Dashboard() {
                       {item.dob ? item.dob.split("T")[0] : "N/A"}
                     </td>
                     <td className="px-4 py-2">{item.email}</td>
+                    <td className="px-4 py-2">Employee</td>
                   </tr>
                 ))
               ) : (
