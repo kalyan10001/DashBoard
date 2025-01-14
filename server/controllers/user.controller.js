@@ -82,3 +82,22 @@ export const Login=async(req,res)=>{
         console.log(error);
     }
 };
+
+export const Getdata=async(req,res)=>{
+    try {
+        const data=await User.find({});
+        if(!data)
+        {
+            res.status(200).json({
+                message:"no data found"
+            });
+        }
+        res.status(200).json({
+            message:"data fetched",
+            data:data
+        });
+        
+    } catch (error) {
+     console.log(error);   
+    }
+}

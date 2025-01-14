@@ -25,6 +25,7 @@ function Login() {
         navigate("/dashboard");
       } else {
         alert(data.message);
+        navigate("/register");
       }
     } catch (error) {
       console.log(error.message);
